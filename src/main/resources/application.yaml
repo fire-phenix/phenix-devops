@@ -6,6 +6,7 @@ server:
       force: true
       charset: UTF-8
       enabled: true
+    context-path: /api/devops
   tomcat:
     uri-encoding: UTF-8
 
