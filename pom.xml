@@ -19,15 +19,10 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <myabtis-flex.version>1.7.3</myabtis-flex.version>
+        <myabtis-plus.version>3.5.4</myabtis-plus.version>
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>com.mybatis-flex</groupId>
-            <artifactId>mybatis-flex-codegen</artifactId>
-            <version>${myabtis-flex.version}</version>
-        </dependency>
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
@@ -54,6 +49,10 @@
             <version>3.1.8</version>
         </dependency>
         <dependency>
+            <groupId>org.freemarker</groupId>
+            <artifactId>freemarker</artifactId>
+        </dependency>
+        <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
             <version>5.8.22</version>
@@ -62,10 +61,6 @@
             <groupId>com.alibaba.fastjson2</groupId>
             <artifactId>fastjson2</artifactId>
             <version>2.0.41</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -88,9 +83,14 @@
             <version>8.0.33</version>
         </dependency>
         <dependency>
-            <groupId>com.mybatis-flex</groupId>
-            <artifactId>mybatis-flex-spring-boot-starter</artifactId>
-            <version>${myabtis-flex.version}</version>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-generator</artifactId>
+            <version>${myabtis-plus.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+            <version>${myabtis-plus.version}</version>
         </dependency>
         <dependency>
             <groupId>com.alibaba</groupId>
@@ -139,6 +139,12 @@
         <dependency>
             <groupId>org.springframework.session</groupId>
             <artifactId>spring-session-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <scope>runtime</scope>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

@@ -1,7 +1,7 @@
 package com.fire.phenix.devops.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.fire.phenix.devops.entity.SysResource;
-import com.mybatisflex.core.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

@@ -1,14 +1,14 @@
 package com.fire.phenix.devops.entity;
 
-import com.mybatisflex.annotation.Id;
-import com.mybatisflex.annotation.KeyType;
-import com.mybatisflex.annotation.Table;
-import java.io.Serializable;
-import java.sql.Timestamp;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
+import java.sql.Timestamp;
 
 /**
  *  实体类。
@@ -20,10 +20,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(value = "sys_menu")
 public class SysMenu implements Serializable {
 
-    @Id(keyType = KeyType.Auto)
+    @TableId(value = "id",type = IdType.AUTO)
     private Long id;
 
     private Long parentId;

@@ -1,6 +1,6 @@
 package com.fire.phenix.devops.mapper;
 
-import com.mybatisflex.core.BaseMapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.fire.phenix.devops.entity.SysAccountRole;
 import org.apache.ibatis.annotations.Mapper;
 

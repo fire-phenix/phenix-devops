@@ -1,6 +1,6 @@
 package com.fire.phenix.devops.service.impl;
 
-import com.mybatisflex.spring.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.fire.phenix.devops.entity.SysAccountRole;
 import com.fire.phenix.devops.mapper.SysAccountRoleMapper;
 import com.fire.phenix.devops.service.ISysAccountRoleService;

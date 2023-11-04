@@ -1,9 +1,9 @@
 package com.fire.phenix.devops.service.impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.fire.phenix.devops.entity.SysResource;
 import com.fire.phenix.devops.mapper.SysResourceMapper;
 import com.fire.phenix.devops.service.ISysResourceService;
-import com.mybatisflex.spring.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +18,6 @@ import java.util.List;
 public class SysResourceServiceImpl extends ServiceImpl<SysResourceMapper, SysResource> implements ISysResourceService {
     @Override
     public List<SysResource> findResourcesByAccountId(Long accountId) {
-        return mapper.findResourcesByAccountId(accountId);
+        return baseMapper.findResourcesByAccountId(accountId);
     }
 }

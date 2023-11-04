@@ -22,13 +22,7 @@ spring:
         max-idle: 8
         #连接池中的最小空闲连接
         min-idle: 0
-  elasticsearch:
-    uris: https://192.168.73.7:9200
-    username:
-    password:
-    connection-timeout: 3000
-    socket-timeout: 30
 
-mybatis-flex:
+mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

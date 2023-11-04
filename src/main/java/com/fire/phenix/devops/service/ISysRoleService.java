@@ -1,6 +1,7 @@
 package com.fire.phenix.devops.service;
 
-import com.mybatisflex.core.service.IService;
+
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.fire.phenix.devops.entity.SysRole;
 
 import java.util.List;

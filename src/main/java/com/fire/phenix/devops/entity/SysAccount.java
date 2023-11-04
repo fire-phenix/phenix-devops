@@ -1,9 +1,8 @@
 package com.fire.phenix.devops.entity;
 
-import com.mybatisflex.annotation.Column;
-import com.mybatisflex.annotation.Id;
-import com.mybatisflex.annotation.KeyType;
-import com.mybatisflex.annotation.Table;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -17,10 +16,10 @@ import java.util.Collection;
  * @author fire-phenix
  * @since 2023-11-02
  */
-@Table(value = "sys_account")
+
 public class SysAccount implements Serializable, UserDetails {
 
-    @Id(keyType = KeyType.Auto)
+    @TableId(value = "id",type = IdType.AUTO)
     private Long id;
 
     /**
@@ -76,21 +75,21 @@ public class SysAccount implements Serializable, UserDetails {
     /**
      * 是否可用（0表示不可用；1表示可用）
      */
-    private Boolean enabled;
+    private Integer enabled;
 
     /**
      * 是否被锁（0表示被锁；1表示可用）
      */
-    private Boolean locked;
-    @Column(ignore = true)
+    private Integer locked;
+    @TableField(exist = false)
     private Long roleId;
 
-    @Column(ignore = true)
+    @TableField(exist = false)
     private String roleName;
     /**
      * 用户所具有的权限
      */
-    @Column(ignore = true)
+    @TableField(exist = false)
     private Collection<? extends GrantedAuthority> authorities;
 
     @Override
@@ -115,7 +114,7 @@ public class SysAccount implements Serializable, UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return locked;
+        return locked==1;
     }
 
     @Override
@@ -125,7 +124,7 @@ public class SysAccount implements Serializable, UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return enabled;
+        return enabled==1;
     }
 
     public Long getId() {
@@ -208,15 +207,15 @@ public class SysAccount implements Serializable, UserDetails {
         this.loginTime = loginTime;
     }
 
-    public void setEnabled(Boolean enabled) {
+    public void setEnabled(Integer enabled) {
         this.enabled = enabled;
     }
 
-    public Boolean getLocked() {
+    public Integer getLocked() {
         return locked;
     }
 
-    public void setLocked(Boolean locked) {
+    public void setLocked(Integer locked) {
         this.locked = locked;
     }
 

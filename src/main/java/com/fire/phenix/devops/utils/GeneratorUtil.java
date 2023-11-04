@@ -1,58 +1,51 @@
 package com.fire.phenix.devops.utils;
 
-import com.alibaba.druid.pool.DruidDataSource;
-import com.mybatisflex.codegen.Generator;
-import com.mybatisflex.codegen.config.GlobalConfig;
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.generator.FastAutoGenerator;
+import com.baomidou.mybatisplus.generator.config.OutputFile;
+import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
+import com.baomidou.mybatisplus.generator.fill.Column;
 
-import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author fire-phenix
  * @since 2023-11-02
  */
 public class GeneratorUtil {
+    private static final String URL ="jdbc:postgresql://192.168.56.130:5432/traffic-lvs";
+    private static final String USERNAME ="root";
+    private static final String PASSWORD ="Tv75aYT8@";
+
     public static void main(String[] args) {
-        //配置数据源
-        DruidDataSource dataSource = new DruidDataSource();
-        dataSource.setUrl("jdbc:mysql://192.168.73.7:3306/devops?characterEncoding=utf-8");
-        dataSource.setUsername("root");
-        dataSource.setPassword("Tv75aYT8@");
-
-        //创建配置内容，两种风格都可以。
-        GlobalConfig globalConfig = createGlobalConfigUseStyle1();
-
-        //通过 datasource 和 globalConfig 创建代码生成器
-        Generator generator = new Generator(dataSource, globalConfig);
-
-        //生成代码
-        generator.generate();
+        FastAutoGenerator.create(URL, USERNAME, PASSWORD)
+                .globalConfig(builder -> {
+                    builder.author("fire-phenix") // 设置作者
+                            .outputDir("src\\main\\java"); // 指定输出目录
+                })
+                .packageConfig(builder -> {
+                    builder.parent("com.fire.phenix") // 设置父包名
+                            .moduleName("devops") // 设置父包模块名
+                            .pathInfo(Collections.singletonMap(OutputFile.xml, "src\\main\\resources\\mapper")); // 设置mapperXml生成路径
+                })
+                .strategyConfig((scanner, builder) -> builder.addInclude(getTables(scanner.apply("请输入表名，多个英文逗号分隔？所有输入 all")))
+                        .controllerBuilder().enableRestStyle().enableHyphenStyle()
+                        .entityBuilder().enableLombok().addTableFills(
+                                new Column("create_time", FieldFill.INSERT)
+                        ).build())
+                /*
+                    模板引擎配置，默认 Velocity 可选模板引擎 Beetl 或 Freemarker
+                   .templateEngine(new BeetlTemplateEngine())
+                   .templateEngine(new FreemarkerTemplateEngine())
+                 */
+                // 使用Freemarker引擎模板，默认的是Velocity引擎模板
+                .templateEngine(new FreemarkerTemplateEngine())
+                .execute();
     }
 
-    public static GlobalConfig createGlobalConfigUseStyle1() {
-        //创建配置内容
-        GlobalConfig globalConfig = new GlobalConfig();
-
-        //设置根包
-        globalConfig.setBasePackage("com.fire.phenix.devops");
-
-        //设置生成 entity 并启用 Lombok
-        globalConfig.setEntityGenerateEnable(true);
-        // 开启 Entity 的生成
-        // 设置生成 Entity 并启用 Lombok、设置父类
-        globalConfig.enableEntity().setWithLombok(true);
-        globalConfig.setEntityWithLombok(true);
-        globalConfig.setAuthor("fire-phenix");
-        globalConfig.setSince(LocalDate.now().toString());
-
-        //设置生成 mapper
-        globalConfig.setMapperGenerateEnable(true);
-        globalConfig.setServiceGenerateEnable(true);
-        globalConfig.getServiceConfig().setClassPrefix("I");
-        globalConfig.setServiceImplGenerateEnable(true);
-        globalConfig.setControllerGenerateEnable(true);
-        globalConfig.setMapperXmlGenerateEnable(true);
-        globalConfig.setTableDefGenerateEnable(true);
-
-        return globalConfig;
+    protected static List<String> getTables(String tables) {
+        return "all".equals(tables) ? Collections.emptyList() : Arrays.asList(tables.split(","));
     }
 }

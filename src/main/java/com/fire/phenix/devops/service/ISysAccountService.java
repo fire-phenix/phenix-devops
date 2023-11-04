@@ -1,12 +1,12 @@
 package com.fire.phenix.devops.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.fire.phenix.devops.entity.SysAccount;
 import com.fire.phenix.devops.lang.PageResp;
 import com.fire.phenix.devops.model.dto.PasswordDto;
 import com.fire.phenix.devops.model.dto.SysAccountDto;
 import com.fire.phenix.devops.model.vo.SysAccountVo;
-import com.mybatisflex.core.paginate.Page;
-import com.mybatisflex.core.service.IService;
 
 /**
  * 服务层。
