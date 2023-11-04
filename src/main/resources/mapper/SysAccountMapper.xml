@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper
-        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.fire.phenix.devops.mapper.SysAccountMapper">
-
+    <update id="updateAccountById">
+        update sys_account
+        <set>
+            <if test="account.remark!=null">remark=#{account.remark}</if>
+        </set>
+        where id=#{account.id}
+    </update>
 </mapper>
