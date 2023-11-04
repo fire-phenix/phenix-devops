@@ -21,8 +21,9 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
 
-mybatis-flex:
+mybatis-plus:
   mapper-locations: classpath:/mapper/*Mapper.xml
   global-config:
-    key-config:
-      key-type: auto
+    db-config:
+      id-type: auto
+
