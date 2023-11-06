@@ -10,6 +10,7 @@ import com.fire.phenix.devops.model.LoginResult;
 import com.fire.phenix.devops.service.ISysAccountService;
 import com.fire.phenix.devops.service.ISysAuthenticationService;
 import com.fire.phenix.devops.service.ISysResourceService;
+import com.fire.phenix.devops.service.ISysRoleService;
 import com.fire.phenix.devops.utils.RandomValidateCodeUtil;
 import com.fire.phenix.devops.utils.TokenProviderUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -43,6 +44,8 @@ public class SysAuthenticationServiceImpl implements ISysAuthenticationService {
     private ISysResourceService resourceService;
     @Resource
     private PasswordEncoder passwordEncoder;
+    @Resource
+    private ISysRoleService roleService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -61,6 +64,7 @@ public class SysAuthenticationServiceImpl implements ISysAuthenticationService {
 
     public LoginResult login(LoginInfo info) {
         SysAccount account = accountService.getAccountByUsername(info.getUsername());
+
         List<SysResource> resources = resourceService.findResourcesByAccountId(account.getId());
         List<SimpleGrantedAuthority> authorities = resources.stream()
                 .map(role -> new SimpleGrantedAuthority(role.getId() + ":" + role.getName()))
@@ -87,6 +91,11 @@ public class SysAuthenticationServiceImpl implements ISysAuthenticationService {
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(account, null, account.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
         return LoginResult.builder()
+                .username(info.getUsername())
+                .realName(account.getRoleName())
+                .email(account.getEmail())
+                .icon(account.getIcon())
+                .remark(account.getRemark())
                 .token(TokenProviderUtil.token(info.getUsername()))
                 .build();
     }

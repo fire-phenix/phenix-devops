@@ -7,6 +7,7 @@ import com.fire.phenix.devops.service.ISysRoleService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  *  服务层实现。
@@ -19,5 +20,11 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     @Override
     public List<SysRole> findAllRoles() {
         return this.list();
+    }
+
+    @Override
+    public Set<String> findRolesByAccountId(Long accountId) {
+
+        return null;
     }
 }
