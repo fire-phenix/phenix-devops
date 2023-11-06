@@ -3,6 +3,8 @@ package com.fire.phenix.devops.service;
 import com.mybatisflex.core.service.IService;
 import com.fire.phenix.devops.entity.SysResource;
 
+import java.util.List;
+
 /**
  *  服务层。
  *
@@ -11,4 +13,5 @@ import com.fire.phenix.devops.entity.SysResource;
  */
 public interface ISysResourceService extends IService<SysResource> {
 
+    List<SysResource> findResourcesByAccountId(Long id);
 }

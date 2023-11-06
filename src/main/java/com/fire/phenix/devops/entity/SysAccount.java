@@ -1,17 +1,22 @@
 package com.fire.phenix.devops.entity;
 
+import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
-import java.io.Serializable;
-import java.sql.Timestamp;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.io.Serializable;
+import java.sql.Timestamp;
+import java.util.Collection;
 
 /**
- *  实体类。
+ * 实体类。
  *
  * @author fire-phenix
  * @since 2023-11-02
@@ -21,7 +26,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(value = "sys_account")
-public class SysAccount implements Serializable {
+public class SysAccount implements Serializable, UserDetails {
 
     @Id(keyType = KeyType.Auto)
     private Long id;
@@ -40,14 +45,40 @@ public class SysAccount implements Serializable {
 
     private String remark;
 
-    private Timestamp createdTime;
+    private Timestamp createTime;
 
-    private Timestamp updatedTime;
+    private Timestamp updateTime;
 
     private Timestamp loginTime;
 
-    private Integer enabled;
+    private Integer enable;
 
-    private Integer locked;
+    private Integer locke;
+    @Column(ignore = true)
+    private Collection<? extends GrantedAuthority> authorities;
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return authorities == null ? null : authorities;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return locke == 1;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enable == 1;
+    }
 }

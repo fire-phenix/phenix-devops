@@ -6,6 +6,8 @@ import com.fire.phenix.devops.mapper.SysResourceMapper;
 import com.fire.phenix.devops.service.ISysResourceService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  *  服务层实现。
  *
@@ -15,4 +17,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class SysResourceServiceImpl extends ServiceImpl<SysResourceMapper, SysResource> implements ISysResourceService {
 
+    @Override
+    public List<SysResource> findResourcesByAccountId(Long accountId) {
+        return mapper.findResourcesByAccountId(accountId);
+    }
 }

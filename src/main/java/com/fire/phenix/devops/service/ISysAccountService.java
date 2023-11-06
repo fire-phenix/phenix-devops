@@ -10,4 +10,5 @@ import com.mybatisflex.core.service.IService;
  * @since 2023-11-02
  */
 public interface ISysAccountService extends IService<SysAccount> {
+    SysAccount getAccountByUsername(String username);
 }
