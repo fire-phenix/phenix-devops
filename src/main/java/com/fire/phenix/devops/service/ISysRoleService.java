@@ -33,4 +33,13 @@ public interface ISysRoleService extends IService<SysRole> {
     Boolean updateRole(Long id, SysRole menu);
 
     Boolean deleteRole(Long id);
+
+    /**
+     * 为角色分配菜单
+     *
+     * @param roleId  角色ID
+     * @param menuIds 菜单ID
+     * @return true|false
+     */
+    Boolean assignmentMenu(Long roleId, List<Long> menuIds);
 }

@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.Parameters;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * 控制层。
@@ -54,6 +55,11 @@ public class SysRoleController {
     @PutMapping("/update/{id}")
     public boolean update(@PathVariable Long id, @RequestBody SysRole role) {
         return roleService.updateRole(id, role);
+    }
+
+    @PostMapping("/assignment")
+    public Boolean assignmentMenu(@RequestParam Long roleId, @RequestParam List<Long> menuIds) {
+        return roleService.assignmentMenu(roleId, menuIds);
     }
 
     /**
