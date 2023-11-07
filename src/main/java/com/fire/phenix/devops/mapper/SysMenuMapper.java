@@ -19,5 +19,5 @@ public interface SysMenuMapper extends BaseMapper<SysMenu> {
      * @param menu 菜单项信息
      * @return 修改的条目数
      */
-    Long updatePartFieldById(@Param("id") Long id, @Param("menu") SysMenu menu);
+    int updatePartFieldById(@Param("id") Long id, @Param("menu") SysMenu menu);
 }

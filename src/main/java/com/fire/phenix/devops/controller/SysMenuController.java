@@ -65,7 +65,7 @@ public class SysMenuController {
      * @return 分页对象
      */
     @GetMapping("")
-    @Operation(summary = "分页查询所有集群信息")
+    @Operation(summary = "分页查询所有菜单项信息")
     @Parameters({
             @Parameter(name = "num", description = "页码"),
             @Parameter(name = "size", description = "每页大小"),
