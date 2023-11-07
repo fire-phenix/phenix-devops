@@ -27,6 +27,7 @@ import java.util.stream.Stream;
 import static com.fire.phenix.devops.entity.table.SysAccountRoleTableDef.SYS_ACCOUNT_ROLE;
 import static com.fire.phenix.devops.entity.table.SysMenuTableDef.SYS_MENU;
 import static com.fire.phenix.devops.entity.table.SysRoleMenuTableDef.SYS_ROLE_MENU;
+import static com.fire.phenix.devops.entity.table.SysRoleTableDef.SYS_ROLE;
 
 /**
  * 服务层实现。
@@ -94,6 +95,10 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
 
     @Override
     public Boolean deleteMenu(Long id) {
+        List<SysRole> roles = roleService.list(QueryWrapper.create().select("r.*").from(SYS_ROLE.as("r")).leftJoin(SYS_ROLE_MENU).as("rm").on(SYS_ROLE.ID.eq(SYS_ROLE_MENU.ROLE_ID)).where(SYS_ROLE_MENU.MENU_ID.eq(id)));
+        if (CollectionUtil.isNotEmpty(roles)) {
+            throw new IllegalStateException(String.format("当前菜单项正在被角色【%s】使用，不允许删除", roles.stream().map(SysRole::getName).collect(Collectors.toSet())));
+        }
         if (!this.removeById(id)) {
             throw new IllegalStateException("删除菜单失败");
         }
