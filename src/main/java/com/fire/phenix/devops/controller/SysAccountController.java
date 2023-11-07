@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.Parameters;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * 控制层。
@@ -54,6 +55,18 @@ public class SysAccountController {
     @PutMapping("/update/{id}")
     public boolean update(@PathVariable Long id, @RequestBody SysAccount account) {
         return accountService.updateAccount(id, account);
+    }
+
+    /**
+     * 为用户分配角色
+     *
+     * @param accountId 账户ID
+     * @param roleIds   角色ID
+     * @return {@code true} 更新成功，{@code false} 更新失败
+     */
+    @PutMapping("/assignment")
+    public boolean update(@RequestParam Long accountId, @RequestParam List<Long> roleIds) {
+        return accountService.assignmentMenu(accountId, roleIds);
     }
 
     /**

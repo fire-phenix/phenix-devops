@@ -4,6 +4,8 @@ import com.fire.phenix.devops.entity.SysAccount;
 import com.fire.phenix.devops.lang.IPage;
 import com.mybatisflex.core.service.IService;
 
+import java.util.List;
+
 /**
  * 服务层。
  *
@@ -20,4 +22,12 @@ public interface ISysAccountService extends IService<SysAccount> {
     Boolean updateAccount(Long id, SysAccount account);
 
     Boolean deleteAccount(Long id);
+
+    /**
+     * 为用户分配角色信息
+     * @param accountId 账户ID
+     * @param roleIds 角色ID
+     * @return true|false
+     */
+    Boolean assignmentMenu(Long accountId, List<Long> roleIds);
 }
