@@ -4,4 +4,13 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.fire.phenix.devops.mapper.SysRoleMapper">
 
+    <update id="updatePartFieldById">
+        UPDATE `sys_role`
+        <set>
+            <if test="role.name!='' and role.name!=null">`name` = #{role.name},</if>
+            <if test="role.description!='' and role.description!=null">`description` = #{role.description},</if>
+            <if test="role.status!=null">`status` = #{role.status},</if>
+            <if test="role.sort!=null">`sort` = #{role.sort},</if>
+        </set>
+    </update>
 </mapper>

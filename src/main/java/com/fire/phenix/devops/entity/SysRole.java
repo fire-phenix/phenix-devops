@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 /**
@@ -45,7 +45,7 @@ public class SysRole implements GrantedAuthority, Serializable {
 
     private String description;
 
-    private Timestamp createTime;
+    private LocalDateTime createTime;
 
     /**
      * 角色状态
