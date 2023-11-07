@@ -4,4 +4,18 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.fire.phenix.devops.mapper.SysAccountMapper">
 
+    <update id="updatePartFieldById">
+        UPDATE `sys_account`
+        <set>
+            <if test="icon != null and icon != ''">`icon` = #{account.icon},</if>
+            <if test="email != null and email != ''">`email` = #{account.email},</if>
+            <if test="type != null and type != ''">`type` = #{account.type},</if>
+            <if test="real_name != null and real_name != ''">`real_name` = #{account.realName},</if>
+            <if test="remark != null and remark != ''">`remark` = #{account.remark},</if>
+            <if test="enable != null and enable != ''">`enable` = #{account.enable},</if>
+            <if test="lock != null and lock != ''">`lock` = #{account.lock},</if>
+        </set>
+        WHERE `id` = #{id}
+
+    </update>
 </mapper>

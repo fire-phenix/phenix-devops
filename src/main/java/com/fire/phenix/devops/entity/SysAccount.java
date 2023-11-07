@@ -13,7 +13,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Set;
 
@@ -47,15 +47,15 @@ public class SysAccount implements Serializable, UserDetails {
 
     private String remark;
 
-    private Timestamp createTime;
+    private LocalDateTime createTime;
 
-    private Timestamp updateTime;
+    private LocalDateTime updateTime;
 
-    private Timestamp loginTime;
+    private LocalDateTime loginTime;
 
     private Integer enable;
 
-    private Integer locke;
+    private Integer lock;
     @Column(ignore = true)
     private Collection<? extends GrantedAuthority> authorities;
 
@@ -75,7 +75,7 @@ public class SysAccount implements Serializable, UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return locke == 1;
+        return lock == 1;
     }
 
     @Override
