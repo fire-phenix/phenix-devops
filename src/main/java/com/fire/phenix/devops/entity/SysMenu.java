@@ -9,7 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 /**
  *  实体类。
@@ -79,6 +79,6 @@ public class SysMenu implements Serializable {
     /**
      * 创建时间
      */
-    private Timestamp createTime;
+    private LocalDateTime createTime;
 
 }

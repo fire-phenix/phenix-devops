@@ -2,13 +2,17 @@ package com.fire.phenix.devops.service.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.collection.ListUtil;
+import cn.hutool.core.util.StrUtil;
 import com.fire.phenix.devops.entity.SysMenu;
 import com.fire.phenix.devops.entity.SysRole;
+import com.fire.phenix.devops.lang.IPage;
 import com.fire.phenix.devops.mapper.SysMenuMapper;
 import com.fire.phenix.devops.model.Router;
 import com.fire.phenix.devops.model.RouterType;
 import com.fire.phenix.devops.service.ISysMenuService;
 import com.fire.phenix.devops.service.ISysRoleService;
+import com.mybatisflex.core.paginate.Page;
+import com.mybatisflex.core.query.QueryColumn;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.spring.service.impl.ServiceImpl;
 import lombok.extern.log4j.Log4j2;
@@ -17,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -65,6 +70,61 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
                 .sorted(Comparator.comparing(SysMenu::getSort))
                 .collect(Collectors.toList());
         return this.recursionFillRouter(0L, new HashSet<>(menus));
+    }
+
+    @Override
+    public IPage<SysMenu> findAllMenus(Integer num, Integer size, String condition) {
+        QueryWrapper wrapper = QueryWrapper.create().where("1 = 1");
+        if (StrUtil.isNotBlank(condition)) {
+            Map<String, Object> map = split(condition);
+            for (Map.Entry<String, Object> entry : map.entrySet()) {
+                wrapper.and(new QueryColumn(entry.getKey()).like(entry.getValue()));
+            }
+            log.info("wrapper:{}", wrapper);
+        }
+        Page<SysMenu> page = this.page(new Page<>(num, size), wrapper);
+        return new IPage<>(page);
+    }
+
+    /**
+     * @param param 带分隔的url参数
+     * @return map对象
+     */
+    public static Map<String, Object> split(String param) {
+        Map<String, Object> map = new HashMap<>();
+        String[] params = param.split("&");
+        for (String p : params) {
+            String[] pair = p.split("=");
+            if (pair.length == 2) {
+                map.put(pair[0], pair[1]);
+            }
+        }
+        return map;
+    }
+
+    @Override
+    public Long insertMenu(SysMenu menu) {
+        menu.setCreateTime(LocalDateTime.now());
+        if (!this.save(menu)) {
+            throw new IllegalStateException("添加菜单项失败");
+        }
+        return menu.getId();
+    }
+
+    @Override
+    public Boolean updateMenu(Long id, SysMenu menu) {
+        if (mapper.updatePartFieldById(id, menu) < 1) {
+            throw new IllegalStateException("修改菜单项信息失败");
+        }
+        return true;
+    }
+
+    @Override
+    public Boolean deleteMenu(Long id) {
+        if (!this.removeById(id)) {
+            throw new IllegalStateException("删除菜单失败");
+        }
+        return true;
     }
 
     private List<SysMenu> findMenusByRoleIds(List<Long> ids) {

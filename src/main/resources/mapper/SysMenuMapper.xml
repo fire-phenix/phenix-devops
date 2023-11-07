@@ -4,4 +4,14 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.fire.phenix.devops.mapper.SysMenuMapper">
 
+    <update id="updatePartFieldById">
+        UPDATE `sys_menu`
+        <set>
+            <if test="menu.redirect!=null and menu.redirect!=''">`redirect` = #{menu.redirect},</if>
+            <if test="menu.description!=null and menu.description!=''">`description` = #{menu.description},</if>
+            <if test="menu.sort!=null">`sort` = #{menu.sort},</if>
+            <if test="menu.hidden!=null">`hidden` = #{menu.hidden},</if>
+        </set>
+        where id=#{id}
+    </update>
 </mapper>

@@ -1,6 +1,7 @@
 package com.fire.phenix.devops.service;
 
 import com.fire.phenix.devops.entity.SysMenu;
+import com.fire.phenix.devops.lang.IPage;
 import com.fire.phenix.devops.model.Router;
 import com.mybatisflex.core.service.IService;
 
@@ -22,4 +23,20 @@ public interface ISysMenuService extends IService<SysMenu> {
      * @return 路由列表
      */
     List<Router> getRouters();
+
+    /**
+     * 分页查询菜单项信息
+     *
+     * @param num  页码
+     * @param size 每页大小
+     * @param condition  查询条件
+     * @return 分页结果
+     */
+    IPage<SysMenu> findAllMenus(Integer num, Integer size, String condition);
+
+    Long insertMenu(SysMenu menu);
+
+    Boolean updateMenu(Long id, SysMenu menu);
+
+    Boolean deleteMenu(Long id);
 }
