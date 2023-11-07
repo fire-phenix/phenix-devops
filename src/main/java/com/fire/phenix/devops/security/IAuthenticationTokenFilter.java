@@ -20,7 +20,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 /**
@@ -41,7 +40,6 @@ public class IAuthenticationTokenFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
-
         boolean match = Constant.WHITES.stream()
                 .map(p -> new AntPathRequestMatcher(p.getValue(), p.getKey().toString()))
                 .anyMatch(matcher -> matcher.matches(request));
@@ -58,7 +56,6 @@ public class IAuthenticationTokenFilter extends OncePerRequestFilter {
             );
             auth.setDetails(userDetail);
             SecurityContextHolder.getContext().setAuthentication(auth);
-            log.info("user 【{}】 logged into the system at the {}.", userDetail.getUsername(), LocalDateTime.now());
         }
         chain.doFilter(request, response);
     }

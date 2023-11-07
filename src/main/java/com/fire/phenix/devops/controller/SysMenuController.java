@@ -1,19 +1,12 @@
 package com.fire.phenix.devops.controller;
 
-import com.mybatisflex.core.paginate.Page;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.beans.factory.annotation.Autowired;
 import com.fire.phenix.devops.entity.SysMenu;
 import com.fire.phenix.devops.service.ISysMenuService;
-import org.springframework.web.bind.annotation.RestController;
+import com.mybatisflex.core.paginate.Page;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
 import java.io.Serializable;
-import java.util.List;
 
 /**
  *  控制层。
@@ -26,7 +19,7 @@ import java.util.List;
 public class SysMenuController {
 
     @Autowired
-    private ISysMenuService iSysMenuService;
+    private ISysMenuService menuService;
 
     /**
      * 添加。
@@ -36,7 +29,7 @@ public class SysMenuController {
      */
     @PostMapping("save")
     public boolean save(@RequestBody SysMenu sysMenu) {
-        return iSysMenuService.save(sysMenu);
+        return menuService.save(sysMenu);
     }
 
     /**
@@ -47,7 +40,7 @@ public class SysMenuController {
      */
     @DeleteMapping("remove/{id}")
     public boolean remove(@PathVariable Serializable id) {
-        return iSysMenuService.removeById(id);
+        return menuService.removeById(id);
     }
 
     /**
@@ -58,18 +51,10 @@ public class SysMenuController {
      */
     @PutMapping("update")
     public boolean update(@RequestBody SysMenu sysMenu) {
-        return iSysMenuService.updateById(sysMenu);
+        return menuService.updateById(sysMenu);
     }
 
-    /**
-     * 查询所有。
-     *
-     * @return 所有数据
-     */
-    @GetMapping("list")
-    public List<SysMenu> list() {
-        return iSysMenuService.list();
-    }
+
 
     /**
      * 根据主键获取详细信息。
@@ -79,7 +64,7 @@ public class SysMenuController {
      */
     @GetMapping("getInfo/{id}")
     public SysMenu getInfo(@PathVariable Serializable id) {
-        return iSysMenuService.getById(id);
+        return menuService.getById(id);
     }
 
     /**
@@ -90,7 +75,7 @@ public class SysMenuController {
      */
     @GetMapping("page")
     public Page<SysMenu> page(Page<SysMenu> page) {
-        return iSysMenuService.page(page);
+        return menuService.page(page);
     }
 
 }

@@ -22,6 +22,5 @@ public class LoginResult {
     private String remark;
     private String icon;
     private Set<String> roles;
-    private Set<String> permissions;
     private String token;
 }

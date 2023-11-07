@@ -2,7 +2,7 @@ package com.fire.phenix.devops.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.fire.phenix.devops.entity.SysAccount;
-import com.fire.phenix.devops.entity.SysResource;
+import com.fire.phenix.devops.entity.SysMenu;
 import com.fire.phenix.devops.exception.IAuthenticationException;
 import com.fire.phenix.devops.fastmap.ExpireCallback;
 import com.fire.phenix.devops.fastmap.FastMap;
@@ -10,7 +10,7 @@ import com.fire.phenix.devops.model.LoginInfo;
 import com.fire.phenix.devops.model.LoginResult;
 import com.fire.phenix.devops.service.ISysAccountService;
 import com.fire.phenix.devops.service.ISysAuthenticationService;
-import com.fire.phenix.devops.service.ISysResourceService;
+import com.fire.phenix.devops.service.ISysMenuService;
 import com.fire.phenix.devops.service.ISysRoleService;
 import com.fire.phenix.devops.utils.RandomValidateCodeUtil;
 import com.fire.phenix.devops.utils.TokenProviderUtil;
@@ -23,12 +23,13 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.server.header.CacheControlServerHttpHeadersWriter;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashSet;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -43,7 +44,7 @@ public class SysAuthenticationServiceImpl implements ISysAuthenticationService {
     @Resource
     private ISysAccountService accountService;
     @Resource
-    private ISysResourceService resourceService;
+    private ISysMenuService menuService;
     @Resource
     private PasswordEncoder passwordEncoder;
 
@@ -52,26 +53,12 @@ public class SysAuthenticationServiceImpl implements ISysAuthenticationService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        //获取用户信息
-        SysAccount account = accountService.getAccountByUsername(username);
-        if (account != null) {
-            List<SysResource> resources = resourceService.findResourcesByAccountId(account.getId());
-            List<SimpleGrantedAuthority> authorities = resources.stream()
-                    .map(role -> new SimpleGrantedAuthority(role.getId() + ":" + role.getName()))
-                    .collect(Collectors.toList());
-            account.setAuthorities(authorities);
-            return account;
-        }
-        throw new UsernameNotFoundException("用户名或密码错误");
+        // 获取用户信息
+        return setAuthoritiesByUsername(username);
     }
 
     public LoginResult login(LoginInfo info) {
-        SysAccount account = accountService.getAccountByUsername(info.getUsername());
-        List<SysResource> resources = resourceService.findResourcesByAccountId(account.getId());
-        List<SimpleGrantedAuthority> authorities = resources.stream()
-                .map(role -> new SimpleGrantedAuthority(role.getId() + ":" + role.getName()))
-                .collect(Collectors.toList());
-        account.setAuthorities(authorities);
+        SysAccount account = setAuthoritiesByUsername(info.getUsername());
         String password = info.getPassword();
 
         //log.info("private security:{}", secure);
@@ -80,7 +67,7 @@ public class SysAuthenticationServiceImpl implements ISysAuthenticationService {
         //String decode = new String(Base64.getDecoder().decode(info.getPassword()), StandardCharsets.UTF_8);
         // 解密数据
         //String password = rsa.decryptStr(decode, KeyType.PrivateKey, StandardCharsets.UTF_8);
-        log.info("密码对比结果:{}",passwordEncoder.matches(password, account.getPassword()));
+        log.info("密码对比结果:{}", passwordEncoder.matches(password, account.getPassword()));
         if (!passwordEncoder.matches(password, account.getPassword())) {
             throw new IAuthenticationException("用户密码不正确!");
         }
@@ -92,8 +79,8 @@ public class SysAuthenticationServiceImpl implements ISysAuthenticationService {
         LoginResult result = BeanUtil.copyProperties(account, LoginResult.class);
 
         result.setRoles(roleService.findRolesByAccountId(account.getId()));
-        result.setPermissions(new HashSet<>());
         result.setToken(TokenProviderUtil.token(info.getUsername()));
+        log.info("user 【{}】 logged into the system at the {}.", info.getUsername(), LocalDateTime.now());
         return result;
     }
 
@@ -134,6 +121,15 @@ public class SysAuthenticationServiceImpl implements ISysAuthenticationService {
         } catch (Exception e) {
             e.printStackTrace(System.err);
         }
+    }
+
+    private SysAccount setAuthoritiesByUsername(String username) {
+        SysAccount account = accountService.getAccountByUsername(username);
+        Assert.notNull(account, String.format("指定用户【%s】不存在", username));
+        List<SysMenu> resources = menuService.findMenusByAccountId(account.getId());
+        List<SimpleGrantedAuthority> authorities = resources.stream().map(role -> new SimpleGrantedAuthority(role.getId() + ":" + role.getCode())).collect(Collectors.toList());
+        account.setAuthorities(authorities);
+        return account;
     }
 }
 

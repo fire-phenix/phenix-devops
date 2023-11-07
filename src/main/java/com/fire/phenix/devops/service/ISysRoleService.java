@@ -3,6 +3,7 @@ package com.fire.phenix.devops.service;
 import com.fire.phenix.devops.entity.SysRole;
 import com.mybatisflex.core.service.IService;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -13,4 +14,6 @@ import java.util.Set;
  */
 public interface ISysRoleService extends IService<SysRole> {
     Set<String> findRolesByAccountId(Long accountId);
+
+    List<SysRole> findRolesByUsername(String username);
 }

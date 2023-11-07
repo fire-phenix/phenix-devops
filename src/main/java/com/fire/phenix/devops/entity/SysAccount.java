@@ -1,5 +1,6 @@
 package com.fire.phenix.devops.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
@@ -14,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.Set;
 
 /**
  * 实体类。
@@ -56,6 +58,10 @@ public class SysAccount implements Serializable, UserDetails {
     private Integer locke;
     @Column(ignore = true)
     private Collection<? extends GrantedAuthority> authorities;
+
+    @Column(ignore = true)
+    @JsonManagedReference
+    private Set<SysRole> roles;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
