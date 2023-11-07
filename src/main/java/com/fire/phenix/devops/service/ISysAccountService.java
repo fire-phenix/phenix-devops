@@ -13,7 +13,7 @@ import java.util.List;
  * @since 2023-11-02
  */
 public interface ISysAccountService extends IService<SysAccount> {
-    SysAccount getAccountByUsername(String username);
+    SysAccount findAccountByUsername(String username);
 
     IPage<SysAccount> findAllAccounts(Integer num, Integer size, String condition);
 

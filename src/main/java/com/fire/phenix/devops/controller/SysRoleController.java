@@ -6,6 +6,7 @@ import com.fire.phenix.devops.service.ISysRoleService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -31,6 +32,7 @@ public class SysRoleController {
      * @return {@code true} 添加成功，{@code false} 添加失败
      */
     @PostMapping("/save")
+    @PreAuthorize("@rbac.hasPermission(authentication)")
     public Long save(@RequestBody SysRole role) {
         return roleService.insertRole(role);
     }
@@ -42,6 +44,7 @@ public class SysRoleController {
      * @return {@code true} 删除成功，{@code false} 删除失败
      */
     @DeleteMapping("/remove/{id}")
+    @PreAuthorize("@rbac.hasPermission(authentication)")
     public boolean remove(@PathVariable Long id) {
         return roleService.deleteRole(id);
     }
@@ -53,11 +56,13 @@ public class SysRoleController {
      * @return {@code true} 更新成功，{@code false} 更新失败
      */
     @PutMapping("/update/{id}")
+    @PreAuthorize("@rbac.hasPermission(authentication)")
     public boolean update(@PathVariable Long id, @RequestBody SysRole role) {
         return roleService.updateRole(id, role);
     }
 
     @PostMapping("/assignment")
+    @PreAuthorize("@rbac.hasPermission(authentication)")
     public Boolean assignmentMenu(@RequestParam Long roleId, @RequestParam List<Long> menuIds) {
         return roleService.assignmentMenu(roleId, menuIds);
     }
@@ -74,6 +79,7 @@ public class SysRoleController {
             @Parameter(name = "size", description = "每页大小"),
             @Parameter(name = "condition", description = "查询条件")
     })
+    @PreAuthorize("@rbac.hasPermission(authentication)")
     public IPage<SysRole> list(
             @RequestParam(value = "num", required = false, defaultValue = "1") Integer num,
             @RequestParam(value = "size", required = false, defaultValue = "20") Integer size,

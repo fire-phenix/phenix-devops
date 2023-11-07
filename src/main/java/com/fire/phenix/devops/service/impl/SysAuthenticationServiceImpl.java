@@ -124,7 +124,7 @@ public class SysAuthenticationServiceImpl implements ISysAuthenticationService {
     }
 
     private SysAccount setAuthoritiesByUsername(String username) {
-        SysAccount account = accountService.getAccountByUsername(username);
+        SysAccount account = accountService.findAccountByUsername(username);
         Assert.notNull(account, String.format("指定用户【%s】不存在", username));
         List<SysMenu> resources = menuService.findMenusByAccountId(account.getId());
         List<SimpleGrantedAuthority> authorities = resources.stream().map(role -> new SimpleGrantedAuthority(role.getId() + ":" + role.getCode())).collect(Collectors.toList());

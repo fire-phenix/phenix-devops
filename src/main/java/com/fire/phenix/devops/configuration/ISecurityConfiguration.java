@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
  */
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
 public class ISecurityConfiguration {
     @Resource
     private IAccessDeniedHandler accessDeniedHandler;
@@ -36,12 +36,12 @@ public class ISecurityConfiguration {
     private IAuthenticationTokenFilter authenticationTokenFilter;
     @Resource
     private ISysAuthenticationService userDetailService;
+
     /**
      * // 自定义过滤器（图形验证码校验）
      */
     //@Resource
     //private ImageCodeValidateFilter imageCodeValidateFilter;
-
     @Bean
     SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry registry = httpSecurity.authorizeRequests();

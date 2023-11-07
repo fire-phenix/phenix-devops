@@ -39,4 +39,6 @@ public interface ISysMenuService extends IService<SysMenu> {
     Boolean updateMenu(Long id, SysMenu menu);
 
     Boolean deleteMenu(Long id);
+
+    List<String> findUrlByUsername(String username);
 }

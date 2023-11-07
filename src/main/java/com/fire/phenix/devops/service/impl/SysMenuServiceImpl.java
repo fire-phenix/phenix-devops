@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.fire.phenix.devops.entity.table.SysAccountRoleTableDef.SYS_ACCOUNT_ROLE;
+import static com.fire.phenix.devops.entity.table.SysAccountTableDef.SYS_ACCOUNT;
 import static com.fire.phenix.devops.entity.table.SysMenuTableDef.SYS_MENU;
 import static com.fire.phenix.devops.entity.table.SysRoleMenuTableDef.SYS_ROLE_MENU;
 import static com.fire.phenix.devops.entity.table.SysRoleTableDef.SYS_ROLE;
@@ -103,6 +104,18 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
             throw new IllegalStateException("删除菜单失败");
         }
         return true;
+    }
+
+    @Override
+    public List<String> findUrlByUsername(String username) {
+        List<SysMenu> menus = this.list(
+                QueryWrapper.create().select("m.url").from(SYS_MENU.as("m"))
+                        .leftJoin(SYS_ROLE_MENU).on(SYS_MENU.ID.eq(SYS_ROLE_MENU.MENU_ID))
+                        .leftJoin(SYS_ACCOUNT_ROLE).on(SYS_ROLE_MENU.ROLE_ID.eq(SYS_ACCOUNT_ROLE.ROLE_ID))
+                        .leftJoin(SYS_ACCOUNT).on(SYS_ACCOUNT.ID.eq(SYS_ACCOUNT_ROLE.ACCOUNT_ID))
+                        .where(SYS_ACCOUNT.USERNAME.eq(username))
+        );
+        return menus.stream().map(SysMenu::getUrl).collect(Collectors.toList());
     }
 
     private List<SysMenu> findMenusByRoleIds(List<Long> ids) {

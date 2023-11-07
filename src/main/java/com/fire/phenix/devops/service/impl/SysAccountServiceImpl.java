@@ -31,7 +31,7 @@ public class SysAccountServiceImpl extends ServiceImpl<SysAccountMapper, SysAcco
     @Resource
     private ISysAccountRoleService accountRoleService;
     @Override
-    public SysAccount getAccountByUsername(String username) {
+    public SysAccount findAccountByUsername(String username) {
         SysAccount account = this.getOne(QueryWrapper.create().where(SYS_ACCOUNT.USERNAME.eq(username)));
         Assert.notNull(account, String.format("用户【%s】不存在，请重试!", username));
         return account;
