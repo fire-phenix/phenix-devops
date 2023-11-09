@@ -29,6 +29,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -57,7 +58,8 @@ public class SysAuthenticationServiceImpl implements ISysAuthenticationService {
         return setAuthoritiesByUsername(username);
     }
 
-    public LoginResult login(LoginInfo info) {
+    @Override
+    public String login(LoginInfo info) {
         SysAccount account = setAuthoritiesByUsername(info.getUsername());
         String password = info.getPassword();
 
@@ -76,12 +78,11 @@ public class SysAuthenticationServiceImpl implements ISysAuthenticationService {
         }
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(account, null, account.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        LoginResult result = BeanUtil.copyProperties(account, LoginResult.class);
+        // LoginResult result = BeanUtil.copyProperties(account, LoginResult.class);
 
-        result.setRoles(roleService.findRolesByAccountId(account.getId()));
-        result.setToken(TokenProviderUtil.token(info.getUsername()));
+        // result.setRoles(roleService.findRolesByAccountId(account.getId()));
         log.info("user 【{}】 logged into the system at the {}.", info.getUsername(), LocalDateTime.now());
-        return result;
+        return TokenProviderUtil.token(info.getUsername());
     }
 
     @Override
@@ -121,6 +122,15 @@ public class SysAuthenticationServiceImpl implements ISysAuthenticationService {
         } catch (Exception e) {
             e.printStackTrace(System.err);
         }
+    }
+
+    @Override
+    public LoginResult info(Principal principal) {
+        String username = principal.getName();
+        SysAccount account = accountService.findAccountByUsername(username);
+        LoginResult result = BeanUtil.copyProperties(account, LoginResult.class);
+        result.setRoles(roleService.findRolesByAccountId(account.getId()));
+        return result;
     }
 
     private SysAccount setAuthoritiesByUsername(String username) {

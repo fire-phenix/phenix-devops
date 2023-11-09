@@ -46,7 +46,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     @Override
     public Set<String> findRolesByAccountId(Long accountId) {
         List<SysRole> roles = this.list(QueryWrapper.create().select().from(SYS_ROLE).leftJoin(SYS_ACCOUNT_ROLE).on(SYS_ACCOUNT_ROLE.ROLE_ID.eq(SYS_ROLE.ID)).where(SYS_ACCOUNT_ROLE.ACCOUNT_ID.eq(accountId)));
-        return roles.stream().map(SysRole::getName).collect(Collectors.toSet());
+        return roles.stream().map(SysRole::getCode).collect(Collectors.toSet());
     }
 
     @Override

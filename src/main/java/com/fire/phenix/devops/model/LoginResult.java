@@ -22,5 +22,4 @@ public class LoginResult {
     private String remark;
     private String icon;
     private Set<String> roles;
-    private String token;
 }

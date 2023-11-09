@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.security.Principal;
 import java.util.List;
 
 /**
@@ -29,7 +30,7 @@ public class SysAuthenticationController {
 
     @PostMapping("/login")
     @Operation(summary = "用户请求认证")
-    public LoginResult login(@RequestParam String code, @RequestParam String key, @RequestBody LoginInfo info) {
+    public String login(@RequestParam String code, @RequestParam String key, @RequestBody LoginInfo info) {
         return authenticationService.login(info);
     }
 
@@ -43,6 +44,12 @@ public class SysAuthenticationController {
     @Operation(summary = "获取验证码")
     public void verify(HttpServletRequest request, HttpServletResponse response) {
         this.authenticationService.verify(request, response, 1L);
+    }
+
+    @GetMapping("/info")
+    @Operation(summary = "用户信息")
+    public LoginResult info(Principal principal) {
+        return authenticationService.info(principal);
     }
 
     /**

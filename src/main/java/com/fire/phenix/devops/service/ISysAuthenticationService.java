@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.security.Principal;
 
 /**
  * @author fire-phenix
@@ -17,7 +18,7 @@ public interface ISysAuthenticationService extends UserDetailsService {
      * @param info 登录输入信息
      * @return 登录成功的响应
      */
-    LoginResult login(LoginInfo info);
+    String login(LoginInfo info);
 
     /**
      * 退出认证
@@ -28,4 +29,5 @@ public interface ISysAuthenticationService extends UserDetailsService {
 
     void verify(HttpServletRequest request, HttpServletResponse response, Long id);
 
+    LoginResult info(Principal principal);
 }

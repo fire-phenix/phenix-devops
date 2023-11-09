@@ -19,7 +19,7 @@ import java.util.List;
  * @since 2023-11-02
  */
 @RestController
-@RequestMapping("/sysAccount")
+@RequestMapping("/account")
 public class SysAccountController {
 
     @Resource
@@ -86,7 +86,7 @@ public class SysAccountController {
             @Parameter(name = "size", description = "每页大小"),
             @Parameter(name = "condition", description = "查询条件")
     })
-    @PreAuthorize("@rbac.hasPermission(authentication)")
+    //@PreAuthorize("@rbac.hasPermission(authentication)")
     public IPage<SysAccount> list(
             @RequestParam(value = "num", required = false, defaultValue = "1") Integer num,
             @RequestParam(value = "size", required = false, defaultValue = "20") Integer size,
